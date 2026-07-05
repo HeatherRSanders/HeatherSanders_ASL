@@ -1,0 +1,9 @@
+FROM alpine:latest
+
+RUN apk add --no-cache lua
+
+WORKDIR /app
+
+COPY . .
+
+CMD ["lua5.5", "ASL_HSanders_LUA.lua"]

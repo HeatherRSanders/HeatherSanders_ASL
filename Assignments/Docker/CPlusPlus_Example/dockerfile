@@ -1,0 +1,14 @@
+FROM ubuntu:22.04 AS build
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends build-essential \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY ASL_HSanders_Cpp.cpp .
+
+RUN g++ -O2 -static -o app ASL_HSanders_Cpp.cpp
+
+FROM scratch
+COPY --from=build /app/app /app
+CMD ["/app"]

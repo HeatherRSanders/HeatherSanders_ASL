@@ -1,0 +1,7 @@
+services:
+  contacts:
+    build: .
+    container_name: contacts
+    ports:
+      - "8080:8080"
+    

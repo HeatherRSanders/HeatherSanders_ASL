@@ -12,7 +12,7 @@ const show = async (req, res) => {
   // Respond with a single object and 2xx code
   const galaxy = await Galaxy.findByPk(req.params.id, {include: Stars})
   
-  res.json({galaxy})
+  res.render("galaxies/show", {galaxy})
 }
 
 // Create a new resource

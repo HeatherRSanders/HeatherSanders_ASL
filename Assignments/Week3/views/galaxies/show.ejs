@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Galaxy</title>
+</head>
+<body>
+
+<h1><%= galaxy.name %></h1>
+
+<p>Size: <%= galaxy.size %></p>
+
+<p>Description: <%= galaxy.description %></p>
+
+<h2>Stars</h2>
+
+<ul>
+<% galaxy.Stars.forEach(star => { %>
+    <li>
+        <%= star.name %>
+    </li>
+<% }) %>
+</ul>
+
+</body>
+</html>

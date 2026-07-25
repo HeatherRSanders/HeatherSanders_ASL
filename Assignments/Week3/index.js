@@ -8,8 +8,8 @@ const bodyParser = require('body-parser')
 // Load in our RESTful routers
 const routers = require('./routers/index.js')
 
-
-app.use(bodyParser.urlencoded())
+app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
 // Home page welcome middleware

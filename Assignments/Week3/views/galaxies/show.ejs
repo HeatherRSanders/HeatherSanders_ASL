@@ -1,25 +1,144 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Galaxy</title>
-</head>
-<body>
+<%- include("../partials/header") %>
+
+<div class="resource-card">
+
+<% if (galaxy.image) { %>
+
+<img 
+    class="resource-image"
+    src="/uploads/<%= galaxy.image %>"
+    alt="<%= galaxy.name %>"
+>
+
+<% } %>
+
 
 <h1><%= galaxy.name %></h1>
 
-<p>Size: <%= galaxy.size %></p>
+<p>
+    <strong>Size:</strong> 
+    <%= galaxy.size %>
+</p>
 
-<p>Description: <%= galaxy.description %></p>
+<p>
+    <strong>Description:</strong>
+    <%= galaxy.description %>
+</p>
+
 
 <h2>Stars</h2>
 
-<ul>
+
+<ul class="relationship-list">
+
+<% if (galaxy.Stars && galaxy.Stars.length > 0) { %>
+
+
 <% galaxy.Stars.forEach(star => { %>
-    <li>
+
+
+<li>
+
+    <% if (star.image) { %>
+
+    <img
+        class="resource-thumbnail"
+        src="/uploads/<%= star.image %>"
+        alt="<%= star.name %>"
+    >
+
+    <% } %>
+
+
+    <a href="/stars/<%= star.id %>">
         <%= star.name %>
-    </li>
+    </a>
+
+
+    <ul>
+
+
+    <% if (star.Planets && star.Planets.length > 0) { %>
+
+
+        <% star.Planets.forEach(planet => { %>
+
+        <li>
+
+            <% if (planet.image) { %>
+
+            <img
+                class="resource-thumbnail"
+                src="/uploads/<%= planet.image %>"
+                alt="<%= planet.name %>"
+            >
+
+            <% } %>
+
+
+            <a href="/planets/<%= planet.id %>">
+                <%= planet.name %>
+            </a>
+
+        </li>
+
+        <% }) %>
+
+
+    <% } else { %>
+
+        <li>
+            No planets recorded around this star.
+        </li>
+
+    <% } %>
+
+
+    </ul>
+
+</li>
+
+
 <% }) %>
+
+
+<% } else { %>
+
+<li>
+    No stars recorded in this galaxy.
+</li>
+
+
+<% } %>
+
+
 </ul>
 
-</body>
-</html>
+
+<div class="button-group">
+
+<a href="/galaxies/<%= galaxy.id %>/edit">
+    Edit Galaxy
+</a>
+
+
+<form 
+    action="/galaxies/<%= galaxy.id %>?_method=DELETE"
+    method="POST"
+    style="display:inline"
+    onsubmit="return confirm('Delete this galaxy?');"
+>
+
+<button type="submit">
+    Delete Galaxy
+</button>
+
+</form>
+
+</div>
+
+
+</div>
+
+
+<%- include("../partials/footer") %>

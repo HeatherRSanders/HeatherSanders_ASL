@@ -1,0 +1,48 @@
+<form action="<%= action %>" method="POST">
+
+<label>Name</label>
+<input 
+    name="name"
+    value="<%= planet ? planet.name : '' %>"
+>
+
+<label>Size</label>
+<input 
+    name="size"
+    value="<%= planet ? planet.size : '' %>"
+>
+
+<label>Description</label>
+<textarea name="description"><%= star ? star.description : '' %></textarea>
+
+
+<div class="checkbox-group">
+
+<% stars.forEach(star => { %>
+
+<div>
+    <input 
+        type="checkbox"
+        name="starIds"
+        value="<%= star.id %>"
+    >
+
+    <label>
+        <%= star.name %>
+    </label>
+</div>
+
+<% }) %>
+
+</div>
+
+
+
+</select>
+
+
+<button>
+<%= buttonText %>
+</button>
+
+</form>

@@ -1,0 +1,105 @@
+<%- include("../partials/header") %>
+
+
+<div class="resource-card">
+
+
+<% if(planet.image){ %>
+
+<img
+class="resource-image"
+src="/uploads/<%= planet.image %>"
+alt="<%= planet.name %>"
+>
+
+<% } %>
+
+
+<h1><%= planet.name %></h1>
+
+
+<p>
+<strong>Size:</strong>
+<%= planet.size %>
+</p>
+
+
+<p>
+<strong>Description:</strong>
+<%= planet.description %>
+</p>
+
+
+
+<h2>Stars</h2>
+
+
+<ul class="relationship-list">
+
+<% if(planet.Stars && planet.Stars.length > 0){ %>
+
+
+<% planet.Stars.forEach(star=>{ %>
+
+<li>
+
+<% if(star.image){ %>
+
+<img
+class="resource-thumbnail"
+src="/uploads/<%= star.image %>"
+alt="<%= star.name %>"
+>
+
+<% } %>
+
+
+<a href="/stars/<%= star.id %>">
+<%= star.name %>
+</a>
+
+
+</li>
+
+<% }) %>
+
+
+<% } else { %>
+
+<li>No stars recorded for this planet.</li>
+
+<% } %>
+
+
+</ul>
+
+
+
+<div class="button-group">
+
+<a href="/planets/<%= planet.id %>/edit">
+Edit Planet
+</a>
+
+
+<form
+action="/planets/<%= planet.id %>?_method=DELETE"
+method="POST"
+style="display:inline"
+onsubmit="return confirm('Delete this planet?');"
+>
+
+<button>
+Delete Planet
+</button>
+
+</form>
+
+
+</div>
+
+
+</div>
+
+
+<%- include("../partials/footer") %>

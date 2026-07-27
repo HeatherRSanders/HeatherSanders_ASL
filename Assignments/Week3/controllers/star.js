@@ -1,39 +1,228 @@
 const { Stars, Galaxy, Planets } = require("../models")
-// Show all resources
+const respond = require("../helpers/respond")
+
+
 const index = async (req, res) => {
-  // Respond with an array and 2xx status code
-  const stars = await Stars.findAll()
-  res.json(stars)
+
+    const stars = await Stars.findAll({
+        include: [
+            Galaxy,
+            Planets
+        ]
+    })
+
+
+    respond(
+        req,
+        res,
+        "stars/index",
+        { stars }
+    )
+
 }
 
-// Show resource
+
 const show = async (req, res) => {
-  // Respond with a single object and 2xx code
-  const star = await Stars.findByPk(req.params.id, { include: [Galaxy, Planets] })
 
-  res.json({star})
+    const star = await Stars.findByPk(req.params.id, {
+        include: [
+            Galaxy,
+            Planets
+        ]
+    })
+
+
+    respond(
+        req,
+        res,
+        "stars/show",
+        { star }
+    )
+
 }
 
-// Create a new resource
+
 const create = async (req, res) => {
-  // Issue a redirect with a success 2xx code
-  const stars = await Stars.create(req.body)
-  res.json(stars)
+
+    const star = await Stars.create({
+        ...req.body,
+        image: req.uploadedImage || null
+    })
+
+
+    if(req.body.GalaxyId){
+
+        const galaxy = await Galaxy.findByPk(req.body.GalaxyId)
+
+        await star.setGalaxy(galaxy)
+
+    }
+
+
+    if(req.body.planetIds){
+
+        const ids = Array.isArray(req.body.planetIds)
+            ? req.body.planetIds
+            : [req.body.planetIds]
+
+
+        const planets = await Planets.findAll({
+            where:{
+                id: ids
+            }
+        })
+
+
+        await star.setPlanets(planets)
+
+    }
+
+
+    const createdStar = await Stars.findByPk(star.id, {
+        include: [
+            Galaxy,
+            Planets
+        ]
+    })
+
+
+    if(req.headers["content-type"]?.includes("application/json")) {
+
+        return res.status(201).json(createdStar)
+
+    }
+
+
+    res.redirect("/stars/" + createdStar.id)
+
 }
 
-// Update an existing resource
+
 const update = async (req, res) => {
-  // Respond with a single resource and 2xx code
-  const star = await Stars.update(req.body, {where: {... req.params}})
-  res.json(star)
+
+    const star = await Stars.findByPk(req.params.id)
+
+
+    await star.update({
+        ...req.body,
+        image: req.uploadedImage || undefined
+    })
+
+
+    if(req.body.GalaxyId){
+
+        const galaxy = await Galaxy.findByPk(req.body.GalaxyId)
+
+        await star.setGalaxy(galaxy)
+
+    }
+
+
+    if(req.body.planetIds !== undefined){
+
+        const ids = Array.isArray(req.body.planetIds)
+            ? req.body.planetIds.filter(id => id !== "")
+            : req.body.planetIds === ""
+                ? []
+                : [req.body.planetIds]
+
+
+        const planets = await Planets.findAll({
+            where:{
+                id: ids
+            }
+        })
+
+
+        await star.setPlanets(planets)
+
+    }
+
+
+    const updatedStar = await Stars.findByPk(req.params.id, {
+        include: [
+            Galaxy,
+            Planets
+        ]
+    })
+
+
+    if(req.headers["content-type"]?.includes("application/json")) {
+
+        return res.status(200).json(updatedStar)
+
+    }
+
+
+    res.redirect("/stars/" + updatedStar.id)
+
 }
 
-// Remove a single resource
-const remove = async (req, res) => {
-  // Respond with a 2xx status code and bool
-  const deleted = await Stars.destroy({where: { ...req.params}})
-  res.status(204).json(deleted)
+
+const remove = async (req,res)=>{
+
+    await Stars.destroy({
+        where:{
+            id:req.params.id
+        }
+    })
+
+
+    if(req.headers["content-type"]?.includes("application/json")) {
+
+        return res.status(204).send()
+
+    }
+
+
+    res.redirect("/stars")
+
 }
 
-// Export all controller actions
-module.exports = { index, show, create, update, remove }
+
+const newStar = async (req, res) => {
+
+    const galaxies = await Galaxy.findAll()
+    const planets = await Planets.findAll()
+
+
+    res.render("stars/new", {
+        galaxies,
+        planets
+    })
+
+}
+
+
+const edit = async (req, res) => {
+
+    const star = await Stars.findByPk(req.params.id, {
+        include: [
+            Galaxy,
+            Planets
+        ]
+    })
+
+
+    const galaxies = await Galaxy.findAll()
+    const planets = await Planets.findAll()
+
+
+    res.render("stars/edit", {
+        star,
+        galaxies,
+        planets
+    })
+
+}
+
+
+module.exports = {
+    index,
+    show,
+    create,
+    update,
+    remove,
+    newStar,
+    edit
+}

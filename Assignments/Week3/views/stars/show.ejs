@@ -1,0 +1,127 @@
+<%- include("../partials/header") %>
+
+
+<div class="resource-card">
+
+
+<% if(star.image){ %>
+
+<img
+class="resource-image"
+src="/uploads/<%= star.image %>"
+alt="<%= star.name %>"
+>
+
+<% } %>
+
+
+<h1><%= star.name %></h1>
+
+
+<p>
+<strong>Size:</strong>
+<%= star.size %>
+</p>
+
+
+<p>
+<strong>Description:</strong>
+<%= star.description %>
+</p>
+
+
+
+<h2>Galaxy</h2>
+
+<ul class="relationship-list">
+
+<% if(star.Galaxy){ %>
+
+<li>
+<a href="/galaxies/<%= star.Galaxy.id %>">
+<%= star.Galaxy.name %>
+</a>
+</li>
+
+<% } else { %>
+
+<li>No galaxy assigned.</li>
+
+<% } %>
+
+</ul>
+
+
+
+
+<h2>Planets</h2>
+
+
+<ul class="relationship-list">
+
+<% if(star.Planets && star.Planets.length > 0){ %>
+
+
+<% star.Planets.forEach(planet=>{ %>
+
+<li>
+
+<% if(planet.image){ %>
+
+<img
+class="resource-thumbnail"
+src="/uploads/<%= planet.image %>"
+alt="<%= planet.name %>"
+>
+
+<% } %>
+
+
+<a href="/planets/<%= planet.id %>">
+<%= planet.name %>
+</a>
+
+</li>
+
+
+<% }) %>
+
+
+<% } else { %>
+
+<li>No planets recorded around this star.</li>
+
+<% } %>
+
+
+</ul>
+
+
+
+<div class="button-group">
+
+<a href="/stars/<%= star.id %>/edit">
+Edit Star
+</a>
+
+
+<form
+action="/stars/<%= star.id %>?_method=DELETE"
+method="POST"
+style="display:inline"
+onsubmit="return confirm('Delete this star?');"
+>
+
+<button>
+Delete Star
+</button>
+
+</form>
+
+</div>
+
+
+</div>
+
+
+<%- include("../partials/footer") %>

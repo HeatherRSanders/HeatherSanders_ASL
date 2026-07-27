@@ -1,0 +1,58 @@
+<%- include("../partials/header") %>
+<form id="resource-form" action="<%= action %>" method="POST" enctype="multipart/form-data">
+
+<label>Name</label>
+<input 
+    name="name"
+    value="<%= resource ? resource.name : '' %>"
+>
+
+<label>Size</label>
+<input 
+    type="number"
+    name="size"
+    max="2147483647"
+    value="<%= resource ? resource.size : '' %>"
+>
+
+<label>Description</label>
+<textarea name="description"><%= resource ? resource.description : '' %></textarea>
+
+
+
+
+<% if (typeof galaxies !== "undefined") { %>
+
+<label>Galaxy</label>
+
+<select name="GalaxyId">
+
+<% galaxies.forEach(galaxy => { %>
+
+<option value="<%= galaxy.id %>">
+    <%= galaxy.name %>
+</option>
+
+<% }) %>
+
+</select>
+
+<% } %>
+
+<label>Image</label>
+<input 
+    type="file"
+    name="image"
+>
+
+<button>
+    <%= buttonText %>
+</button>
+
+
+
+
+</form>
+
+
+

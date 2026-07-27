@@ -1,28 +1,38 @@
 // Load in our Express framework
-const express       = require(`express`)
-
-// Create a new Express instance called "app"
-const app           = express()
+const express = require(`express`)
 const bodyParser = require('body-parser')
+const methodOverride = require("method-override")
+const fileUpload = require("express-fileupload")
 
-// Load in our RESTful routers
+// Create app
+const app = express()
+
+// Load routers
 const routers = require('./routers/index.js')
 
-app.set("view engine", "ejs");
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(bodyParser.json())
+// View engine
+app.set("view engine", "ejs")
 
-// Home page welcome middleware
-app.get('/', (req, res) => {
-  res
-    .status(200)
-    .send('Welcome to Star Tracker Library')
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+app.use(fileUpload())
+
+// Enable PUT/DELETE from HTML forms
+app.use(methodOverride("_method"))
+
+// Serve CSS/images/etc
+app.use(express.static("public"))
+
+// Home page
+app.get("/", (req, res) => {
+    res.render("home")
 })
 
-// Register our RESTful routers with our "app"
-app.use(`/planets`,  routers.planet)
-app.use(`/stars`,    routers.star)
+// Resource routes
+app.use(`/planets`, routers.planet)
+app.use(`/stars`, routers.star)
 app.use(`/galaxies`, routers.galaxy)
 
-// Set our app to listen on port 3000
+// Start server
 app.listen(3000)

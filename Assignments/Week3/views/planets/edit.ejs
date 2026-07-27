@@ -1,0 +1,34 @@
+<%- include("../partials/form", {
+    action: "/planets/" + planet.id + "?_method=PUT",
+    resource: planet,
+    buttonText: "Update Planet"
+}) %>
+
+
+<h3>Stars</h3>
+
+<input 
+    type="hidden"
+    name="starIds"
+    value=""
+    form="resource-form"
+>
+
+
+<% stars.forEach(star => { %>
+
+<div>
+
+    <input
+        type="checkbox"
+        name="starIds"
+        value="<%= star.id %>"
+        form="resource-form"
+        <%= planet.Stars.some(s => s.id === star.id) ? "checked" : "" %>
+    >
+
+    <%= star.name %>
+
+</div>
+
+<% }) %>

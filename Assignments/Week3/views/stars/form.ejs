@@ -1,0 +1,38 @@
+<form action="<%= action %>" method="POST">
+
+<label>Name</label>
+<input 
+    name="name"
+    value="<%= star ? star.name : '' %>"
+>
+
+<label>Size</label>
+<input 
+    name="size"
+    value="<%= star ? star.size : '' %>"
+>
+
+<label>Description</label>
+<textarea name="description"><%= star ? star.description : '' %></textarea>
+
+
+<label>Galaxy</label>
+
+<select name="GalaxyId">
+
+<% galaxies.forEach(galaxy => { %>
+
+<option value="<%= galaxy.id %>">
+    <%= galaxy.name %>
+</option>
+
+<% }) %>
+
+</select>
+
+
+<button>
+<%= buttonText %>
+</button>
+
+</form>

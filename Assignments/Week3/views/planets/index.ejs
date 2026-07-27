@@ -1,0 +1,35 @@
+<%- include("../partials/header") %>
+
+<h1>Planets</h1>
+
+<a href="/planets/new">Create Planet</a>
+
+<ul>
+<% planets.forEach(planet => { %>
+<li>
+    <a href="/planets/<%= planet.id %>">
+        <%= planet.name %>
+    </a>
+
+    |
+
+    <a href="/planets/<%= planet.id %>/edit">
+        Edit
+    </a>
+
+    |
+
+    <form 
+        action="/planets/<%= planet.id %>?_method=DELETE"
+        method="POST"
+        style="display:inline"
+        onsubmit="return confirm('Delete this planet?');">
+
+        <button type="submit">Delete</button>
+
+    </form>
+</li>
+<% }) %>
+</ul>
+
+<%- include("../partials/footer") %>

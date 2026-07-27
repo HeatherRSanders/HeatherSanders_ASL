@@ -1,0 +1,34 @@
+<%- include("../partials/header") %>
+
+<h1>Stars</h1>
+
+<a href="/stars/new">Create Star</a>
+
+<ul>
+<% stars.forEach(star => { %>
+    <li>
+        <a href="/stars/<%= star.id %>">
+            <%= star.name %>
+        </a>
+
+        |
+        
+        <a href="/stars/<%= star.id %>/edit">
+            Edit
+        </a>
+
+        |
+
+        <form 
+            action="/stars/<%= star.id %>?_method=DELETE"
+            method="POST"
+            style="display:inline"
+            onsubmit="return confirm('Delete this star?');">
+            <button type="submit">Delete</button>
+
+        </form>
+    </li>
+<% }) %>
+</ul>
+
+<%- include("../partials/footer") %>

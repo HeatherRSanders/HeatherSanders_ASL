@@ -1,0 +1,64 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background-color: #111827;
+    color: white;
+}
+
+a {
+    color: #60a5fa;
+}
+
+.card {
+    border: 1px solid #374151;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+button {
+    padding: 2px 3px;
+    cursor: pointer;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.checkbox-group div {
+    display: flex;
+    align-items: center;
+}
+
+.resource-card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.resource-image {
+    max-width: 400px;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.resource-thumbnail {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.relationship-list {
+    margin-left: 20px;
+}
+
+.button-group {
+    margin-top: 20px;
+}
